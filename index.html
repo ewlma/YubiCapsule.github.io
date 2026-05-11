@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yubi's Capsule</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cause:wght@100..900&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --yellow: #FACC15;
+    --yellow-dark: #D97706;
+    --purple: #A855F7;
+    --purple-light: #E9D5FF;
+    --purple-dark: #7C3AED;
+    --blue: #38BDF8;
+    --blue-dark: #0369A1;
+    --pink: #EC4899;
+    --pink-light: #FCE7F3;
+    --orange: #F97316;
+    --bg: #F4F3F0;
+    --bg2: #ECEAE6;
+    --white: #FFFFFF;
+    --dark: #1A1A2E;
+    --text: #2C2C2A;
+    --text-muted: #6B7280;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+  }
+
+  .bg-deco {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .bg-img-deco {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .deco-img {
+    position: absolute;
+    pointer-events: auto;
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.7s ease;
+  }
+  .deco-img.faded {
+    opacity: 0 !important;
+    pointer-events: none;
+  }
+
+  .bg-deco span {
+    position: absolute;
+    font-size: 28px;
+    opacity: 0.1;
+    animation: floatDeco 6s ease-in-out infinite;
+  }
+
+  .bg-deco span:nth-child(1) { top: 8%; left: 6%; animation-delay: 0s; }
+  .bg-deco span:nth-child(2) { top: 15%; right: 8%; animation-delay: 1s; }
+  .bg-deco span:nth-child(3) { top: 45%; left: 4%; animation-delay: 2s; }
+  .bg-deco span:nth-child(4) { top: 65%; right: 6%; animation-delay: 0.5s; }
+  .bg-deco span:nth-child(5) { bottom: 15%; left: 10%; animation-delay: 1.5s; }
+  .bg-deco span:nth-child(6) { bottom: 8%; right: 10%; animation-delay: 2.5s; }
+
+  @keyframes floatDeco {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-14px) rotate(8deg); }
+  }
+
+  .disclaimer-bar {
+    width: 100%;
+    background: var(--purple-light);
+    border-bottom: 1.5px solid rgba(168,85,247,0.25);
+    color: var(--purple-dark);
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    text-align: center;
+    padding: 8px 20px;
+    position: relative;
+    z-index: 11;
+  }
+
+  header {
+    width: 100%;
+    background: var(--dark);
+    padding: 12px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 10;
+  }
+
+  .header-logo {
+    height: 52px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .nav-menu a {
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    color: rgba(255,255,255,0.55);
+    text-decoration: none;
+    padding: 7px 16px;
+    border-radius: 30px;
+    letter-spacing: 0.3px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .nav-menu a:hover {
+    background: rgba(255,255,255,0.08);
+    color: var(--white);
+  }
+  .nav-menu a.active {
+    background: var(--yellow);
+    color: var(--dark);
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 540px;
+    padding: 48px 20px 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .title-area { text-align: center; }
+
+  .eyebrow {
+    display: inline-block;
+    background: var(--dark);
+    color: var(--yellow);
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    padding: 6px 16px;
+    border-radius: 30px;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  .main-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(44px, 10vw, 68px);
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+
+  .main-title .t1 { color: var(--blue); display: block; }
+  .main-title .t2 { color: var(--dark); display: block; }
+
+  .tagline { font-size: 15px; color: var(--text-muted); font-weight: 600; margin-bottom: 6px; }
+  .drop-date { font-family: 'Fredoka One', cursive; font-size: 18px; color: var(--purple); }
+
+  .machine-wrap {
+    position: relative;
+    width: 100%;
+  }
+
+  .machine-star {
+    position: absolute;
+    width: 110px;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .machine-star-left  { left: -70px; top: 35%; transform: rotate(-10deg); }
+  .machine-star-right { right: -70px; top: 8%;  transform: rotate(12deg);  }
+
+  .machine {
+    width: 100%;
+    background: var(--white);
+    border-radius: 32px;
+    border: 4px solid var(--white);
+    overflow: hidden;
+    box-shadow: 0 0 0 2px var(--dark), 0 24px 60px rgba(0,0,0,0.12), 0 4px 16px rgba(168,85,247,0.08);
+  }
+
+  .machine-bar {
+    background: var(--dark);
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .machine-bar::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.025) 3px, rgba(255,255,255,0.025) 4px);
+  }
+
+  .bar-title { font-family: 'Fredoka One', cursive; font-size: 20px; position: relative; z-index: 1; }
+  .bar-title .y { color: var(--yellow); }
+  .bar-title .s { color: var(--purple); }
+  .bar-title .c { color: var(--blue); }
+  .bar-badge { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 1.5px; color: rgba(255,255,255,0.35); text-transform: uppercase; position: relative; z-index: 1; }
+
+  .machine-window {
+    padding: 44px 28px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .capsule-ring {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    border: 3px dashed rgba(168,85,247,0.25);
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
+  }
+
+  .capsule-ring.revealed {
+    border-style: solid;
+    border-color: var(--purple);
+    background: var(--white);
+    box-shadow: 0 0 0 8px rgba(168,85,247,0.06), 0 12px 40px rgba(168,85,247,0.15);
+  }
+
+  .capsule-ring.shaking { animation: shake 0.55s ease-in-out; }
+
+  @keyframes shake {
+    0%,100% { transform: translateX(0) rotate(0deg); }
+    15% { transform: translateX(-10px) rotate(-4deg); }
+    30% { transform: translateX(10px) rotate(4deg); }
+    45% { transform: translateX(-8px) rotate(-3deg); }
+    60% { transform: translateX(8px) rotate(3deg); }
+    75% { transform: translateX(-4px) rotate(-1deg); }
+  }
+
+  .q-mark { font-family: 'Fredoka One', cursive; font-size: 80px; color: rgba(168,85,247,0.18); line-height: 1; user-select: none; }
+
+  .result-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    display: none;
+    animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .result-img.show { display: block; }
+
+  @keyframes popIn {
+    0% { transform: scale(0) rotate(-15deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  .result-block {
+    text-align: center;
+    min-height: 56px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.35s ease 0.25s;
+  }
+  .result-block.show { opacity: 1; transform: translateY(0); }
+
+  .result-name { font-family: 'Fredoka One', cursive; font-size: 22px; color: var(--purple-dark); }
+
+.pull-num { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 1px; }
+
+  .machine-actions { padding: 0 28px 28px; display: flex; flex-direction: column; gap: 10px; }
+
+  .btn-pull {
+    width: 100%;
+    padding: 20px;
+    border: none;
+    border-radius: 20px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 24px;
+    cursor: pointer;
+    background: var(--dark);
+    color: var(--yellow);
+    letter-spacing: 1px;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn-pull:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,0,0,0.22); }
+  .btn-pull:active { transform: translateY(0); box-shadow: none; }
+  .btn-pull:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  .btn-reset {
+    width: 100%;
+    padding: 13px;
+    border: 2px solid rgba(168,85,247,0.2);
+    border-radius: 16px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    background: transparent;
+    color: var(--purple);
+    transition: all 0.2s;
+  }
+  .btn-reset:hover { background: var(--purple-light); border-color: rgba(168,85,247,0.4); }
+
+.history-section { width: 100%; display: none; }
+  .history-section.show {
+    display: block;
+    background: var(--white);
+    border: 4px solid var(--white);
+    border-radius: 24px;
+    padding: 20px;
+    box-shadow: 0 0 0 2px var(--dark), 0 4px 20px rgba(0,0,0,0.08);
+  }
+
+  .history-label {
+    font-family: 'Fredoka One', cursive;
+    font-size: 18px;
+    color: var(--text);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .history-count { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--text-muted); font-weight: 400; }
+
+  .history-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+
+  .h-item {
+    aspect-ratio: 1;
+    border-radius: 14px;
+    background: var(--white);
+    border: 1.5px solid var(--bg2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s;
+    animation: itemIn 0.3s cubic-bezier(0.34, 1.4, 0.64, 1);
+  }
+  .h-item:hover { transform: scale(1.08); }
+
+  @keyframes itemIn {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .h-dot { position: absolute; bottom: 5px; right: 5px; width: 7px; height: 7px; border-radius: 50%; }
+
+  footer {
+    width: 100%;
+    background: var(--dark);
+    padding: 28px 40px;
+    text-align: center;
+    margin-top: auto;
+    position: relative;
+    z-index: 10;
+  }
+  .footer-logo { font-family: 'Fredoka One', cursive; font-size: 20px; margin-bottom: 6px; }
+  .footer-logo .y { color: var(--yellow); }
+  .footer-logo .s { color: var(--purple); }
+  .footer-logo .c { color: var(--blue); }
+  .footer-text { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; color: rgba(255,255,255,0.25); text-transform: uppercase; }
+
+  @media (max-width: 480px) {
+    header { padding: 16px 20px; }
+    .history-grid { grid-template-columns: repeat(5, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-deco">
+  <span>✦</span><span>⬡</span><span>✦</span><span>◇</span><span>✦</span><span>⬡</span>
+</div>
+<div class="bg-img-deco" id="bgImgDeco"></div>
+
+<div class="disclaimer-bar">
+  ⚠ This is not a real brand collaboration. This website is a student project created for ESOC 200 at the University of Arizona.
+</div>
+
+<header>
+  <img class="header-logo" src="Images/brand logo.png" alt="Yubi's Archive">
+  <nav class="nav-menu">
+    <a href="#" class="active">Let's Pull!</a>
+    <a href="about.html">About</a>
+    <a href="media.html">Media</a>
+  </nav>
+</header>
+
+<main>
+  <div class="title-area">
+    <div class="eyebrow">✦ Free Pull Simulator ✦</div>
+    <div class="main-title">
+      <span class="t1">Yubi's</span>
+      <span class="t2">Capsule</span>
+    </div>
+    <p class="tagline"> something crawled out of yubi's archive… and it's adorable ~!!</p>
+    <p class="drop-date">Dropping June 7, 2025</p>
+  </div>
+
+  <div class="machine-wrap">
+  <img class="machine-star machine-star-left"  src="Images/star(1).png" alt="">
+  <img class="machine-star machine-star-right" src="Images/star(2).png" alt="">
+  <div class="machine" id="capsule">
+    <div class="machine-bar">
+      <div class="bar-title"><span class="y">Yubi</span><span class="s">'s</span> <span class="c">Capsule</span></div>
+      <div class="bar-badge"> archive has been loaded</div>
+    </div>
+
+    <div class="machine-window">
+      <div class="capsule-ring" id="ring">
+        <span class="q-mark" id="qmark">?</span>
+        <img class="result-img" id="resultEmoji" src="" alt="">
+      </div>
+      <div class="result-block" id="resultBlock">
+        <div class="result-name" id="resultName"></div>
+        <div class="pull-num" id="pullNum"></div>
+      </div>
+    </div>
+
+    <div class="machine-actions">
+      <button class="btn-pull" id="pullBtn" onclick="doPull()">✦ PULL ✦</button>
+      <button class="btn-reset" onclick="resetAll()">Reset</button>
+    </div>
+  </div>
+  </div>
+
+  <div class="history-section" id="historySection">
+    <div class="history-label">
+      Your pulls <span class="history-count" id="historyCount"></span>
+    </div>
+    <div class="history-grid" id="historyGrid"></div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-logo"><span class="y">Yubi</span><span class="s">'s</span> <span class="c">Capsule</span></div>
+  <div class="footer-text">Pop Mart × Yubi's Archive · Series 01 · 2025 · yubishop.com</div>
+</footer>
+
+<script>
+  const characters = [
+    { name: "Serafina",  img: "toys/Serafina.png",  rarity: "Common", pillClass: "pill-common", dot: "#EC4899" },
+    { name: "Agaroth",   img: "toys/Agaroth.png",   rarity: "Common",   pillClass: "pill-common",   dot: "#F97316" },
+    { name: "Mihrimah",  img: "toys/Mihrimah.png",  rarity: "Common", pillClass: "pill-common", dot: "#38BDF8" },
+  ];
+
+  let pulls = [];
+  let pulling = false;
+
+  function weightedPull() {
+    return characters[Math.floor(Math.random() * characters.length)];
+  }
+
+  function doPull() {
+    if (pulling) return;
+    pulling = true;
+
+    const btn = document.getElementById('pullBtn');
+    const ring = document.getElementById('ring');
+    const qmark = document.getElementById('qmark');
+    const emoji = document.getElementById('resultEmoji');
+    const block = document.getElementById('resultBlock');
+
+    btn.disabled = true;
+    btn.textContent = '✦ PULLING... ✦';
+    block.classList.remove('show');
+    emoji.classList.remove('show');
+    qmark.style.display = 'block';
+    ring.classList.remove('revealed');
+    ring.classList.add('shaking');
+
+    setTimeout(() => {
+      ring.classList.remove('shaking');
+      const char = weightedPull();
+      pulls.push(char);
+
+      qmark.style.display = 'none';
+      emoji.src = char.img;
+      emoji.alt = char.name;
+      emoji.classList.add('show');
+      ring.classList.add('revealed');
+
+      document.getElementById('resultName').textContent = char.name;
+      document.getElementById('pullNum').textContent = `Pull #${pulls.length}`;
+      block.classList.add('show');
+
+      const section = document.getElementById('historySection');
+      const grid = document.getElementById('historyGrid');
+      section.classList.add('show');
+      document.getElementById('historyCount').textContent = `(${pulls.length})`;
+      const item = document.createElement('div');
+      item.className = 'h-item';
+      item.title = char.name;
+      item.innerHTML = `<img src="${char.img}" alt="${char.name}" style="width:100%;height:100%;object-fit:cover;object-position:center;position:absolute;inset:0;"><div class="h-dot" style="background:${char.dot}"></div>`;
+      grid.insertBefore(item, grid.firstChild);
+      while (grid.children.length > 12) grid.removeChild(grid.lastChild);
+
+      btn.disabled = false;
+      btn.textContent = '✦ PULL AGAIN ✦';
+      pulling = false;
+    }, 650);
+  }
+
+  (function initBgDecos() {
+    const container = document.getElementById('bgImgDeco');
+
+    // printwindow: 7 scattered instances, medium size, higher opacity
+    const pwData = [
+      { top: 3,  left: 1,  rot: -6,  size: 110, op: 0.13 },
+      { top: 10, left: 75, rot: 10,  size: 95,  op: 0.11 },
+      { top: 35, left: 88, rot: -8,  size: 120, op: 0.12 },
+      { top: 60, left: 3,  rot: 12,  size: 100, op: 0.13 },
+      { top: 72, left: 80, rot: -4,  size: 115, op: 0.10 },
+      { top: 85, left: 40, rot: 7,   size: 90,  op: 0.11 },
+      { top: 48, left: 55, rot: -12, size: 105, op: 0.09 },
+    ];
+
+    pwData.forEach(d => {
+      const img = document.createElement('img');
+      img.src = 'Images/printwindow.png';
+      img.className = 'deco-img';
+      img.style.cssText = `top:${d.top}%;left:${d.left}%;width:${d.size}px;opacity:${d.op};transform:rotate(${d.rot}deg);`;
+      img.addEventListener('click', () => img.classList.add('faded'));
+      container.appendChild(img);
+    });
+
+    // capsules: capsule (1) only
+    const capPositions = [
+      { top: 6,  left: 30, rot: 15  },
+      { top: 18, left: 8,  rot: -20 },
+      { top: 25, left: 92, rot: 8   },
+      { top: 42, left: 18, rot: -10 },
+      { top: 50, left: 70, rot: 20  },
+      { top: 65, left: 48, rot: -15 },
+      { top: 75, left: 12, rot: 10  },
+      { top: 80, left: 65, rot: -8  },
+      { top: 90, left: 85, rot: 18  },
+      { top: 15, left: 55, rot: -5  },
+    ];
+
+    capPositions.forEach(d => {
+      const size = 38 + Math.floor(Math.random() * 20);
+      const img = document.createElement('img');
+      img.src = 'Images/capsule (1).png';
+      img.className = 'deco-img';
+      img.style.cssText = `top:${d.top}%;left:${d.left}%;width:${size}px;opacity:0.18;transform:rotate(${d.rot}deg);`;
+      img.addEventListener('click', () => img.classList.add('faded'));
+      container.appendChild(img);
+    });
+
+    // clickable hint texts
+    const hints = [
+      { text: 'click here for fun',  top: 8,  left: 5,  rot: -6  },
+      { text: 'psst, click me ✦',   top: 22, left: 78, rot: 8   },
+      { text: 'click here for fun',  top: 55, left: 82, rot: -10 },
+      { text: '✦ click me ✦',       top: 38, left: 2,  rot: 5   },
+      { text: 'psst, click me ✦',   top: 78, left: 30, rot: -7  },
+      { text: 'click here for fun',  top: 92, left: 60, rot: 9   },
+      { text: '✦ click me ✦',       top: 68, left: 60, rot: -4  },
+    ];
+
+    hints.forEach(h => {
+      const el = document.createElement('div');
+      el.textContent = h.text;
+      el.className = 'deco-img';
+      el.style.cssText = `top:${h.top}%;left:${h.left}%;opacity:0.18;transform:rotate(${h.rot}deg);font-family:'Fredoka One',cursive;font-size:13px;color:var(--purple-dark);white-space:nowrap;letter-spacing:1px;`;
+      el.addEventListener('click', () => el.classList.add('faded'));
+      container.appendChild(el);
+    });
+  })();
+
+  function resetAll() {
+    pulls = [];
+    pulling = false;
+    const ring = document.getElementById('ring');
+    ring.className = 'capsule-ring';
+    document.getElementById('qmark').style.display = 'block';
+    const re = document.getElementById('resultEmoji');
+    re.className = 'result-img';
+    re.src = '';
+    re.alt = '';
+    document.getElementById('resultBlock').classList.remove('show');
+    document.getElementById('pullBtn').textContent = '✦ PULL ✦';
+    document.getElementById('pullBtn').disabled = false;
+    document.getElementById('historySection').classList.remove('show');
+    document.getElementById('historyGrid').innerHTML = '';
+  }
+</script>
+</body>
+</html>
